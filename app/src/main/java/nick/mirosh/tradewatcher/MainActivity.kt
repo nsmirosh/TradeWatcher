@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun establishConnection() {
         val client = OkHttpClient()
-        val request = Request.Builder().url("${BuildConfig.BASE_URL}?token=${BuildConfig.API_KEY}").build()
+        val request = Request.Builder().url("${BuildConfig.WEBSOCKET_URL}?token=${BuildConfig.API_KEY}").build()
         echoWebSocketListener = EchoWebSocketListener()
         webSocket = client.newWebSocket(request, echoWebSocketListener)
         client.dispatcher.executorService.shutdown()

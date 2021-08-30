@@ -9,7 +9,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 
-class EchoWebSocketListener() : WebSocketListener() {
+class EchoWebSocketListener : WebSocketListener() {
 
     val socketEventChannel: Channel<String> = Channel(10)
 
@@ -49,9 +49,5 @@ class EchoWebSocketListener() : WebSocketListener() {
 
     companion object {
         private const val NORMAL_CLOSURE_STATUS = 1000
-    }
-
-    interface MySocketListener {
-        fun onUpdate(text: String)
     }
 }
