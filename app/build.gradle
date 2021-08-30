@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+def apikeyPropertiesFile = rootProject.file("api_key.properties");
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "nick.mirosh.tradewatcher"
+        minSdkVersion 16
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", 'BASE_URL', "\"https://finnhub.io/api/v1/\""
+            buildConfigField "String", 'API_KEY', apikeyProperties['finnhub_api_key']
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'BASE_URL', "\"https://finnhub.io/api/v1/\""
+            buildConfigField "String", 'API_KEY', "\"\""
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
