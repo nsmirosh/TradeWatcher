@@ -48,12 +48,9 @@ class MainActivity : AppCompatActivity() {
         webSocket = client.newWebSocket(request, echoWebSocketListener)
         client.dispatcher.executorService.shutdown()
         GlobalScope.launch {
-            echoWebSocketListener.tickFlow.collect {
+            echoWebSocketListener.socketEventChannel.collect {
                 onUpdate(it)
             }
-            /*echoWebSocketListener.socketEventChannel.consumeEach {
-                onUpdate(it)
-            }*/
         }
     }
 

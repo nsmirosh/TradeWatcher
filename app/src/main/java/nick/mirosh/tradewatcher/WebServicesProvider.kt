@@ -2,6 +2,7 @@ package nick.mirosh.tradewatcher
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -21,11 +22,11 @@ class WebServicesProvider {
     private var _webSocketListener: EchoWebSocketListener? = null
 
     @ExperimentalCoroutinesApi
-    fun startSocket(): Channel<String> =
-        with(EchoWebSocketListener()) {
-            startSocket(this)
-            this@with.socketEventChannel
-        }
+    fun startSocket(): Flow<String> {
+        val socket  = EchoWebSocketListener()
+        startSocket(socket)
+        return socket.socketEventChannel
+    }
 
     @ExperimentalCoroutinesApi
     fun startSocket(webSocketListener: EchoWebSocketListener) {
@@ -42,7 +43,6 @@ class WebServicesProvider {
         try {
             _webSocket?.close(NORMAL_CLOSURE_STATUS, null)
             _webSocket = null
-            _webSocketListener?.socketEventChannel?.close()
             _webSocketListener = null
         } catch (ex: Exception) {
         }
