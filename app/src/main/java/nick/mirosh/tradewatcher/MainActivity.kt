@@ -16,8 +16,6 @@ import okhttp3.WebSocket
 import tradewatcher.BuildConfig
 import tradewatcher.R
 
-
-
 class MainActivity : AppCompatActivity() {
     private var output: TextView? = null
     private var search: EditText? = null

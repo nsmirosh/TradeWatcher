@@ -16,7 +16,7 @@
     <EditText
         android:id="@+id/bough_at_price"
         app:layout_constraintTop_toTopOf="@id/container"
-        app:layout_constraintStart_toStartOf="@id/search_et"
+        app:layout_constraintStart_toEndOf="@id/search_et"
         android:layout_marginStart="20dp"
         android:hint="What price did you buy it at?"
         android:layout_width="wrap_content"

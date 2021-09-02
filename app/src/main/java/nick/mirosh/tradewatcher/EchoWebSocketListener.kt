@@ -1,5 +1,8 @@
 package nick.mirosh.tradewatcher
 
+import android.util.Log
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -15,6 +18,12 @@ import org.json.JSONObject
 
 class EchoWebSocketListener : WebSocketListener() {
 
+    private val tag = EchoWebSocketListener::class.java.simpleName
+
+    val moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+
     private val _socketEventChannel = MutableStateFlow("")
     val socketEventChannel: StateFlow<String> = _socketEventChannel
 
@@ -25,7 +34,7 @@ class EchoWebSocketListener : WebSocketListener() {
     @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, text: String) {
         GlobalScope.launch {
-
+            val message = parseMessage(text)
             _socketEventChannel.value = text
         }
     }
@@ -33,6 +42,7 @@ class EchoWebSocketListener : WebSocketListener() {
     @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         GlobalScope.launch {
+            val message = parseMessage(bytes.hex())
             _socketEventChannel.value = bytes.hex()
         }
     }
@@ -51,6 +61,19 @@ class EchoWebSocketListener : WebSocketListener() {
         GlobalScope.launch {
             _socketEventChannel.value = "Error : ${t.message}"
         }
+    }
+
+    private fun parseMessage(text: String): TradeResponse? {
+        val adapter = moshi.adapter(TradeResponse::class.java)
+
+        var trade: TradeResponse? = null
+        try {
+            trade = adapter.fromJson(text)
+        } catch (exception: Exception) {
+            Log.e(tag, "parse exception: ${exception.message}")
+        }
+        Log.w(tag, "trade = $trade")
+        return trade
     }
 
     companion object {
