@@ -6,8 +6,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         start.setOnClickListener { search(search!!.text.toString()) }
     }
 
-    fun onUpdate(newText: String) {
+    suspend fun onUpdate(newText: String) {
         runOnUiThread {
             val previousMessages = output!!.text
             output!!.text = "$previousMessages \n\n\n $newText"
@@ -47,9 +48,12 @@ class MainActivity : AppCompatActivity() {
         webSocket = client.newWebSocket(request, echoWebSocketListener)
         client.dispatcher.executorService.shutdown()
         GlobalScope.launch {
-            echoWebSocketListener.socketEventChannel.consumeEach {
+            echoWebSocketListener.tickFlow.collect {
                 onUpdate(it)
             }
+            /*echoWebSocketListener.socketEventChannel.consumeEach {
+                onUpdate(it)
+            }*/
         }
     }
 
