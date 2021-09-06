@@ -47,13 +47,20 @@ class MainActivity : AppCompatActivity() {
         client.dispatcher.executorService.shutdown()
         GlobalScope.launch {
             echoWebSocketListener.socketEventChannel.collect {
-                onUpdate(it)
+                onUpdate(it.toString())
             }
         }
     }
 
     private fun search(text: String) {
         output!!.text = "Listening..."
-        webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"${text.uppercase()}\"}")
+
+        if (text.uppercase() == "BTC") {
+            webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}")
+
+        }
+        else {
+            webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"${text.uppercase()}\"}")
+        }
     }
 }

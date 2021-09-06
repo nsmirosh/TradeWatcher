@@ -24,8 +24,8 @@ class EchoWebSocketListener : WebSocketListener() {
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
-    private val _socketEventChannel = MutableStateFlow("")
-    val socketEventChannel: StateFlow<String> = _socketEventChannel
+    private val _socketEventChannel = MutableStateFlow((listOf<Trade>()))
+    val socketEventChannel: StateFlow<List<Trade>> = _socketEventChannel
 
     override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
 
@@ -34,16 +34,23 @@ class EchoWebSocketListener : WebSocketListener() {
     @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, text: String) {
         GlobalScope.launch {
+            Log.w(tag, "text from sockets = $text")
             val message = parseMessage(text)
-            _socketEventChannel.value = text
+            Log.w(tag, "message = $message")
+
+            if (message != null) {
+                _socketEventChannel.value = message.data!!
+            }
         }
     }
 
     @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         GlobalScope.launch {
-            val message = parseMessage(bytes.hex())
-            _socketEventChannel.value = bytes.hex()
+            Log.w(tag, "text from sockets = ${bytes.hex()}")
+
+//            val message = parseMessage(bytes.hex())
+//            _socketEventChannel.value = bytes.hex()
         }
     }
 
@@ -51,7 +58,7 @@ class EchoWebSocketListener : WebSocketListener() {
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
         webSocket.close(NORMAL_CLOSURE_STATUS, null)
         GlobalScope.launch {
-            _socketEventChannel.value = "Closing : $code / $reason"
+//            _socketEventChannel.value = "Closing : $code / $reason"
         }
     }
 
@@ -59,7 +66,7 @@ class EchoWebSocketListener : WebSocketListener() {
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: okhttp3.Response?) {
         super.onFailure(webSocket, t, response)
         GlobalScope.launch {
-            _socketEventChannel.value = "Error : ${t.message}"
+//            _socketEventChannel.value = "Error : ${t.message}"
         }
     }
 
