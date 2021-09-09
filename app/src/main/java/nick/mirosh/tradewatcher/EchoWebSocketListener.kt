@@ -3,6 +3,7 @@ package nick.mirosh.tradewatcher
 import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -27,47 +28,37 @@ class EchoWebSocketListener : WebSocketListener() {
     private val _socketEventChannel = MutableStateFlow((listOf<Trade>()))
     val socketEventChannel: StateFlow<List<Trade>> = _socketEventChannel
 
-    override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
+    override fun onOpen(webSocket: WebSocket, response: Response) {
 
     }
 
-    @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, text: String) {
-        GlobalScope.launch {
-            Log.w(tag, "text from sockets = $text")
-            val message = parseMessage(text)
-            Log.w(tag, "message = $message")
+        Log.w(tag, "text from sockets = $text")
+        val message = parseMessage(text)
+        Log.w(tag, "message = $message")
 
-            if (message != null) {
-                _socketEventChannel.value = message.data!!
-            }
+        if (message != null) {
+            _socketEventChannel.value = message.data!!
         }
     }
 
-    @DelicateCoroutinesApi
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        GlobalScope.launch {
-            Log.w(tag, "text from sockets = ${bytes.hex()}")
-
+        Log.w(tag, "text from sockets = ${bytes.hex()}")
 //            val message = parseMessage(bytes.hex())
 //            _socketEventChannel.value = bytes.hex()
-        }
     }
 
-    @DelicateCoroutinesApi
+
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
         webSocket.close(NORMAL_CLOSURE_STATUS, null)
-        GlobalScope.launch {
 //            _socketEventChannel.value = "Closing : $code / $reason"
-        }
+
     }
 
-    @DelicateCoroutinesApi
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: okhttp3.Response?) {
         super.onFailure(webSocket, t, response)
-        GlobalScope.launch {
 //            _socketEventChannel.value = "Error : ${t.message}"
-        }
+
     }
 
     private fun parseMessage(text: String): TradeResponse? {

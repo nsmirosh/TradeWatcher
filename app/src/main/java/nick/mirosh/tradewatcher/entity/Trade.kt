@@ -13,4 +13,10 @@ data class Trade(
     val time: Long? = null,
     @Json(name = "v")
     val volume: Double? = null,
-)
+) {
+
+
+    fun toTradeView(): TradeView {
+        return TradeView(symbol.orEmpty(), price ?: 0.0, time ?: 0L )
+    }
+}
