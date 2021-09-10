@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nick.mirosh.tradewatcher.ui.TradeAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import tradewatcher.R
 
 class MainActivity : AppCompatActivity() {
     private var search: EditText? = null
     private var tradesList: RecyclerView? = null
 
-    val viewModel: MainActivityViewModel by viewModels()
+    val viewModel1: MainActivityViewModel by viewModel()
 
     lateinit var listAdapter: TradeAdapter
 
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         search = findViewById<View>(R.id.search_et) as EditText
         tradesList = findViewById(R.id.trades_rv)
 
-        start.setOnClickListener { search(search!!.text.toString()) }
+        start.setOnClickListener { performSearch() }
         setUpRecyclerList()
     }
 
@@ -46,14 +45,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun startUpdatingTheUi() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.tradesUI.collect {
+            viewModel1.tradesUI.collect {
                 listAdapter.setData(it)
             }
         }
     }
 
-    private fun search(text: String) {
-        viewModel.search(text)
+    private fun performSearch() {
+        viewModel1.search(search!!.text.toString())
         startUpdatingTheUi()
     }
 }

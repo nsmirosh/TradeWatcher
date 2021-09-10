@@ -6,22 +6,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import nick.mirosh.tradewatcher.di.HelloRepository
 import nick.mirosh.tradewatcher.entity.TradeView
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import tradewatcher.BuildConfig
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(val helloRepository: HelloRepository) : ViewModel() {
 
     private val tag = MainActivityViewModel::class.java.simpleName
 
     private val _tradesUI = MutableStateFlow(listOf<TradeView>())
     val tradesUI: StateFlow<List<TradeView>> = _tradesUI
 
-
-    private lateinit var webSocket: WebSocket
-    private lateinit var echoWebSocketListener: EchoWebSocketListener
+    private  var webSocket: WebSocket
+    private var echoWebSocketListener: EchoWebSocketListener
 
 
     init {
@@ -35,6 +35,9 @@ class MainActivityViewModel : ViewModel() {
         client.dispatcher.executorService.shutdown()
         establishConnection()
     }
+
+
+    fun sayHello() = "${helloRepository.giveHello()} from $this"
 
 
     private fun establishConnection() {

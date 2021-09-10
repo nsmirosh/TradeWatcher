@@ -10,6 +10,7 @@
         app:layout_constraintTop_toTopOf="@id/container"
         app:layout_constraintStart_toStartOf="@id/container"
         android:hint="Search for stock"
+        android:enabled="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
