@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,28 +16,34 @@ import kotlinx.coroutines.launch
 import nick.mirosh.tradewatcher.ui.TradeAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import tradewatcher.R
+import tradewatcher.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var search: EditText? = null
-    private var tradesList: RecyclerView? = null
+//    private var search: EditText? = null
+//    private var tradesList: RecyclerView? = null
 
-    val viewModel1: MainActivityViewModel by viewModel()
+    val mainActivityViewModel: MainActivityViewModel by viewModel()
+
+    var binding: ActivityMainBinding? = null
 
     lateinit var listAdapter: TradeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val start = findViewById<View>(R.id.start) as Button
-        search = findViewById<View>(R.id.search_et) as EditText
-        tradesList = findViewById(R.id.trades_rv)
 
-        start.setOnClickListener { performSearch() }
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+/*        val start = findViewById<View>(R.id.start) as Button
+        search = findViewById<View>(R.id.search_et) as EditText
+        tradesList = findViewById(R.id.trades_rv)*/
+
+        binding!!.start.setOnClickListener { performSearch() }
         setUpRecyclerList()
     }
 
     private fun setUpRecyclerList() =
-        with(tradesList!!) {
+        with(binding!!.tradesRv) {
             listAdapter = TradeAdapter()
             adapter = listAdapter
             layoutManager =
@@ -45,14 +52,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun startUpdatingTheUi() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel1.tradesUI.collect {
+            mainActivityViewModel.tradesUI.collect {
                 listAdapter.setData(it)
             }
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
     private fun performSearch() {
-        viewModel1.search(search!!.text.toString())
+        mainActivityViewModel.search(binding!!.searchEt.text.toString())
         startUpdatingTheUi()
     }
 }

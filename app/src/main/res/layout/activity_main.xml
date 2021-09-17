@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/search_et"
-        app:layout_constraintTop_toTopOf="@id/container"
-        app:layout_constraintStart_toStartOf="@id/container"
-        android:hint="Search for stock"
-        android:enabled="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/bough_at_price"
-        app:layout_constraintTop_toTopOf="@id/container"
-        app:layout_constraintStart_toEndOf="@id/search_et"
-        android:layout_marginStart="20dp"
-        android:hint="What price did you buy it at?"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintTop_toBottomOf="@id/search_et"
-        app:layout_constraintStart_toStartOf="@id/container"
-        android:text="Start !"
-        android:layout_marginTop="40dp"
-        android:textSize="17sp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trades_rv"
-        app:layout_constraintTop_toBottomOf="@id/start"
-        app:layout_constraintStart_toStartOf="@id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/search_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Search for stock"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/container" />
+
+        <EditText
+            android:id="@+id/bough_at_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="What price did you buy it at?"
+            app:layout_constraintStart_toEndOf="@id/search_et"
+            app:layout_constraintTop_toTopOf="@id/container" />
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Start !"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toBottomOf="@id/search_et" />
+
+        <TextView
+            android:id="@+id/latest_trades"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Latest trades"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toBottomOf="@id/start" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trades_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toBottomOf="@id/latest_trades" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

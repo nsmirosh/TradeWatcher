@@ -1,0 +1,7 @@
+
+
+1. Implement the proper MVVM architecture
+    1a. Extract logic into the ViewModel
+    1b. Remove unneccessary classes
+    1c. Implement viewBinding
+2. Use Hilt to inject dependencies
