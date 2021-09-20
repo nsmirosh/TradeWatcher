@@ -49,9 +49,9 @@ class MainActivityViewModel : ViewModel() {
         if (text.uppercase() == "BTC") {
             webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"BINANCE:BTCUSDT\"}")
         }
-//        else {
-//            webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"${text.uppercase()}\"}")
-//        }
+        else {
+            webSocket.send("{\"type\":\"subscribe\",\"symbol\":\"${text.uppercase()}\"}")
+        }
     }
 
 }

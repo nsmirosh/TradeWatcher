@@ -1,26 +1,22 @@
 package nick.mirosh.tradewatcher
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nick.mirosh.tradewatcher.ui.TradeAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import tradewatcher.R
 import tradewatcher.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     
-    val mainActivityViewModel: MainActivityViewModel by viewModel()
+    val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     var binding: ActivityMainBinding? = null
 
