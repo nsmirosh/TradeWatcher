@@ -19,9 +19,7 @@ import tradewatcher.R
 import tradewatcher.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-//    private var search: EditText? = null
-//    private var tradesList: RecyclerView? = null
-
+    
     val mainActivityViewModel: MainActivityViewModel by viewModel()
 
     var binding: ActivityMainBinding? = null
@@ -32,11 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-/*        val start = findViewById<View>(R.id.start) as Button
-        search = findViewById<View>(R.id.search_et) as EditText
-        tradesList = findViewById(R.id.trades_rv)*/
 
         binding!!.start.setOnClickListener { performSearch() }
         setUpRecyclerList()

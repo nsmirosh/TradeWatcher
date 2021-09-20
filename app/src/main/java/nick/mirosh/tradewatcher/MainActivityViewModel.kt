@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import nick.mirosh.tradewatcher.di.HelloRepository
 import nick.mirosh.tradewatcher.entity.TradeView
 import okhttp3.OkHttpClient
 import okhttp3.Request

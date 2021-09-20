@@ -4,4 +4,12 @@
     1a. Extract logic into the ViewModel
     1b. Remove unneccessary classes
     1c. Implement viewBinding
+
+2. Write test
 2. Use Hilt to inject dependencies
+
+
+
+Build flow tests for the ViewModel in the WebSocketPractice
+
+Extract the dispatcher and inject in everywhere
