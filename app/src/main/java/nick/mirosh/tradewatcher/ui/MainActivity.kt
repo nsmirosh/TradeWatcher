@@ -1,4 +1,4 @@
-package nick.mirosh.tradewatcher
+package nick.mirosh.tradewatcher.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -10,13 +10,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import nick.mirosh.tradewatcher.ui.TradeAdapter
 import tradewatcher.R
 import tradewatcher.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    
-    val mainActivityViewModel: MainActivityViewModel by viewModels()
+
+    private val mainActivityViewModel: MainActivityViewModel by viewModels {
+        MainActivityViewModelFactory()
+    }
 
     var binding: ActivityMainBinding? = null
 

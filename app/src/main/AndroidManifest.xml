@@ -13,7 +13,7 @@
         android:theme="@style/Theme.WebSocketPractice"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="nick.mirosh.tradewatcher.MainActivity"
+            android:name="nick.mirosh.tradewatcher.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
